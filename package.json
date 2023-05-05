@@ -1,0 +1,23 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hiro20220528/to-do-list-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hiro20220528/to-do-list-site/issues"
+  },
+  "homepage": "https://github.com/Hiro20220528/to-do-list-site#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
