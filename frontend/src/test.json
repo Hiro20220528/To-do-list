@@ -2,28 +2,19 @@
     {
         "id":0,
         "title":"スピントロニクス",
-        "deadline":{
-            "year":2023,
-            "month":5, 
-            "day":12},
+        "deadline":"2023-05-12",
         "memo":"OSSのシミュレータを使って、電流と磁界の関係図を提出"
     }, 
     {
         "id":1,
         "title":"生態情報計測特論",
-        "deadline":{
-            "year":2023,
-            "month":5, 
-            "day":8},
+        "deadline":"2023-05-08",
         "memo":"課題を提出"
     },
     {
         "id":2,
         "title":"入学料免除書類の記入",
-        "deadline":{
-            "year":2023,
-            "month":4, 
-            "day":28},
+        "deadline":"2023-04-28",
         "memo":"住民票、所得証明書等を学務に提出"
     }
 ]

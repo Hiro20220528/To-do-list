@@ -16,13 +16,15 @@ function App() {
   // useEffect(() => {
   //   fetch('/api')
   //     .then((res) => res.json())
-  //     .then((data) => setTodos(data.todos));
+  //     .then((todos) => setTodos(todos));
   // },[])
+
 
 
 
   return (
     <div>
+      {/* <p>{todos}</p> */}
       <div>
         <TodoList todos={todos}/>
       </div>
