@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 
 const app = express();
 const mysql = require("mysql");
@@ -7,9 +8,9 @@ const PORT = 8000;
 
 const pool = mysql.createPool({
           connectionLimit: 10,
-          host: "localhost",
-          user: "root",
-          password: "",
+          host: process.env.SQL_HOST,
+          user: process.env.SQL_USER,
+          password: process.env.SQL_PASSWORD,
           database: "to_do_app"
 });
 
