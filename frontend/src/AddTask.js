@@ -8,34 +8,38 @@ function AddTask() {
 
     const newTitleRef = useRef();
     const newMemoRef = useRef();
-    const newDLRef = useRef();
+    // const newDLRef = useRef();
   
     const addClick = () =>{
         const newTask = {
             title:newTitleRef.current.value,
             memo:newMemoRef.current.value,
-            deadline:newDLRef.current.value,
+            deadline:document.getElementById('newDateInput').value,
         }
-        fetch('/api', {
+        fetch('/todo', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newTask)
-          })
-            .then(res => res.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
+            body: JSON.stringify(newTask),
+        })
+        .then(response => {
+            if (response.ok) {
+              window.location.replace('/');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
   
     return (
+        
     <div>
+
         <div className="col-12 text-center">
             <button type="button" className="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
                 +New Task
             </button>
         </div>
-      
         <div className="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
@@ -45,16 +49,16 @@ function AddTask() {
                     </div>
                     <div className="modal-body">
                         <div className="input-group mb-3">
-                            <p><label className="input-group-text" htmlFor='newTitle'>Title</label></p>
-                            <input id="newTitle" className="form-control" type="text" ref={newTitleRef}/>
+                            <label className="input-group-text" htmlFor='newTitle'>Title</label>
+                            <input id="newTitle" className="form-control" type="text" ref={newTitleRef}></input>
                         </div>
                         <div className="input-group mb-3">
-                        <p><label className="input-group-text" htmlFor='newMemo'>Memo</label></p>
+                            <label className="input-group-text" htmlFor='newMemo'>Memo</label>
                             <textarea id='newMemo' className="form-control" aria-label="With textarea" ref={newMemoRef}></textarea>
                         </div>
-                        <div className="input-group mb-3">
-                            <p><label className="input-group-text" htmlFor='newDL'>Deadline</label></p>
-                            <input id='newDL' type="date" className="form-control" ref={newDLRef}/>
+                        <div class="input-group date">
+                            <label className="input-group-text">Deadline</label>
+                            <input id="newDateInput" type="date" className="form-control"></input>
                         </div>
                     </div>
                     <div className="modal-footer">

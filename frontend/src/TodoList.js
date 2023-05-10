@@ -4,6 +4,7 @@ import Todo from "./Todo"
 
 
 
+
 const TodoList = ({ todos }) => {
 
   return (
@@ -11,6 +12,7 @@ const TodoList = ({ todos }) => {
       <div className="container-sm mt-3">
         <div className="row">
           <ol className="list-unstyled">
+            {/* {todos.map((todo) => <To todo={todo} key={todo.id}/>)} */}
             {todos.map((todo) => <Todo todo={todo} key={todo.id}/>)}
           </ol>
         </div>
