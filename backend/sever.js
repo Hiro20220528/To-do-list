@@ -5,7 +5,7 @@ const app = express();
 const mysql = require("mysql");
 
 const PORT = 8000;
-
+app.use(express.json()); // post bodyを受け取る
 const pool = mysql.createPool({
           connectionLimit: 10,
           host: process.env.SQL_HOST,
@@ -32,16 +32,138 @@ app.get('/todo', (req, res) => {
 
                     console.log("connecting mysql");
 
+                    connection.query("SELECT * FROM myTask", (err, rows) => {
+                              connection.release();
+
+                              console.log(rows);
+                              if(!err) {
+                                        // res.send(rows[0]);
+                                        res.json(rows);
+                              }
+                    });
+          });
+});
+
+app.get('/todo-dev', (req, res) => {
+          // todo mysqlからデータを取得し返す
+
+          // test respons
+          // res.json({id: 0, text: "プレゼン資料作成"});
+
+          pool.getConnection((err, connection) => {
+                    if(err) throw err;
+
+                    console.log("connecting mysql");
+
                     connection.query("SELECT * FROM task", (err, rows) => {
                               connection.release();
 
                               console.log(rows);
                               if(!err) {
-                                        res.send(rows);
+                                        // res.send(rows[0]);
+                                        res.json(rows);
                               }
                     });
           });
 });
+
+app.post('/todo', (req, res) => {
+
+          // console.log(req);
+          console.log(req.body);
+          const task = {
+                    title: req.body.title,
+                    deadline: req.body.deadline,
+                    memo: req.body.memo,
+          };
+          console.log(`my tasi -> ${task}`);
+          pool.getConnection((err, connection) => {
+                    if(err) throw err;
+
+                    console.log("connecting mysql");
+
+                    connection.query(`INSERT INTO myTask SET ?`, task, (err, rows) => {
+                              connection.release();
+
+                              console.log(rows);
+                              if(!err) {
+                                        // res.redirect("/todo/add");
+                                        console.log("success making new task!");
+                              }else {
+                                        console.log(err);
+                              }
+                    });
+          });
+
+});
+
+app.delete('/todo', (req, res) => {
+
+          // console.log(req);
+          // console.log(req.body);
+          // task を取得
+          let deleteTaskId = req.body.id;
+
+          console.log(deleteTaskId);
+
+
+          // test respons
+          // res.json({id: 0, text: "プレゼン資料作成"});
+
+          // // todo mysqlからデータを取得し返す
+          pool.getConnection((err, connection) => {
+                    if(err) throw err;
+
+                    console.log("connecting mysql");
+
+                    connection.query(`DELETE FROM myTask WHERE id=?`, [deleteTaskId], (err, result) => {
+                              connection.release();
+
+                              if(!err) {
+                                        // res.redirect("/todo");
+                                        console.log("success making new task!")
+                              }else {
+                                        console.log(err);
+                              }
+                    });
+          });
+          
+
+});
+
+app.post('/todo/update', (req, res) => {
+
+          // console.log(req);
+          console.log(req.body);
+          const task = {
+                    id: req.body.id,
+                    title: req.body.title,
+                    deadline: req.body.deadline,
+                    memo: req.body.memo,
+          };
+          console.log(`update task -> ${task}`);
+          
+          // pool.getConnection((err, connection) => {
+          //           if(err) throw err;
+
+          //           console.log("connecting mysql");
+
+          //           connection.query(`UPDATE myTask SET title=?, deadline=?, memo=? WHERE id=?`, [req.body.title, req.body.deadline, req.body.memo, req.body.id], (err, result) => {
+          //                     connection.release();
+
+          //                     if(!err) {
+                                        // res.redirect("/todo");
+                                        // console.log("success update task!")
+          //                     }else {
+          //                               console.log(err);
+          //                     }
+          //           });
+          // });
+
+});
+
+
+
 
 // to do listを追加するapi
 app.get('/todo/add', (req, res) => {

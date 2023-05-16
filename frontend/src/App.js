@@ -7,17 +7,23 @@ import TodoList from './TodoList';
 
 import { useState, useEffect } from 'react';
 
-import todos from "./test.json"
+// import todos from "./test.json"
 
 function App() {
 
-  // const [todos, setTodos] = useState('');
+  const [todos, setTodos] = useState('');
+
+  console.log("Hello");
   
-  // useEffect(() => {
-  //   fetch('/api')
-  //     .then((res) => res.json())
-  //     .then((todos) => setTodos(todos));
-  // },[])
+  useEffect(() => {
+    fetch('/todo', {method: 'GET'})
+      .then((res) => {
+        // console.log(res);
+        return res.json();
+      }).then((data) => {
+        console.log(data);
+      });
+  },[]);
 
 
 
@@ -25,12 +31,12 @@ function App() {
   return (
     <div>
       {/* <p>{todos}</p> */}
-      <div>
+      {/* <div>
         <TodoList todos={todos}/>
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <AddTask/>
-      </div>
+      </div> */}
     </div>
 
     
