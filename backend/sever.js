@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 app.get('/todo', (req, res) => {
           // todo mysqlからデータを取得し返す
           // test respons
-          res.json([{id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}, {id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}]);
+        //   res.json([{id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}, {id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}]);
         //   pool.getConnection((err, connection) => {
         //             if(err) throw err;
 
@@ -35,17 +35,13 @@ app.get('/todo', (req, res) => {
         //             connection.query("SELECT * FROM task", (err, rows) => {
         //                       connection.release();
 
-<<<<<<< HEAD
-                    connection.query("SELECT * FROM myTask", (err, rows) => {
-                              connection.release();
-
-                              console.log(rows);
-                              if(!err) {
-                                        // res.send(rows[0]);
-                                        res.json(rows);
-                              }
-                    });
-          });
+        connection.query("SELECT * FROM myTask", (err, rows) => {
+                connection.release();
+                console.log(rows);
+                if(!err) {
+                        res.json(rows);
+                }
+        });
 });
 
 app.post('/todo/post', (req, res) => {
@@ -178,14 +174,6 @@ app.get('/todo-dev', (req, res) => {
                               }
                     });
           });
-=======
-        //                       console.log(rows);
-        //                       if(!err) {
-        //                                 res.send(rows);
-        //                       }
-        //             });
-        //   });
->>>>>>> develop
 });
 
 
