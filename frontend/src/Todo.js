@@ -37,23 +37,25 @@ const Todo = ({ todo }) => {
       memo:reMemoRef.current.value,
       deadline:document.getElementById('reDL').value,
     } 
-    fetch('/todo/update', {
-      method: 'POST',
+    fetch('/todo/put', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(reTask)
-    })
+      })
       .then(response => {
-            if (response.ok) {
-              window.location.replace('/');
-            }
+            // if (response.ok) {
+          console.log(response);
+          window.location.replace('/todo');
+            // }
         })
+        // .then((data) => console.log(data));
         .catch(error => console.error('Error:', error));
     }
 
   const deleteClick = () => {
-    fetch('/todo', {
+    fetch('/todo/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -61,9 +63,9 @@ const Todo = ({ todo }) => {
       body:JSON.stringify({id:todo.id}) 
     })
       .then(response => {
-            if (response.ok) {
-              window.location.replace('/');
-            }
+            // if (response.ok) {
+              window.location.replace('/todo');
+            // }
         })
         .catch(error => console.error('Error:', error));
     }

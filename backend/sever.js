@@ -1,6 +1,8 @@
 const express = require("express");
 require("dotenv").config();
 
+// import todos from "./test.json"
+
 const app = express();
 const mysql = require("mysql");
 
@@ -23,24 +25,22 @@ app.get('/', (req, res) => {
 // to do list全体を返すapi
 app.get('/todo', (req, res) => {
           // todo mysqlからデータを取得し返す
-
           // test respons
-          // res.json({id: 0, text: "プレゼン資料作成"});
+          res.json([{id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}, {id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}]);
+        //   pool.getConnection((err, connection) => {
+        //             if(err) throw err;
 
-          pool.getConnection((err, connection) => {
-                    if(err) throw err;
+        //             console.log("connecting mysql");
 
-                    console.log("connecting mysql");
+        //             connection.query("SELECT * FROM task", (err, rows) => {
+        //                       connection.release();
 
-                    connection.query("SELECT * FROM task", (err, rows) => {
-                              connection.release();
-
-                              console.log(rows);
-                              if(!err) {
-                                        res.send(rows);
-                              }
-                    });
-          });
+        //                       console.log(rows);
+        //                       if(!err) {
+        //                                 res.send(rows);
+        //                       }
+        //             });
+        //   });
 });
 
 // to do listを追加するapi

@@ -16,7 +16,7 @@ function AddTask() {
             memo:newMemoRef.current.value,
             deadline:document.getElementById('newDateInput').value,
         }
-        fetch('/todo', {
+        fetch('/todo/post', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ function AddTask() {
         })
         .then(response => {
             if (response.ok) {
-              window.location.replace('/');
+              window.location.replace('/todo');
             }
         })
         .catch(error => console.error('Error:', error));
