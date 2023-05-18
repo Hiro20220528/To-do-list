@@ -4,58 +4,71 @@ import { useState, useRef } from 'react'
 
 const Todo = ({ todo }) => {
 
+
+//YYYY-MM-DDから各要素を取り出す
   const year = parseInt(todo.deadline.substr(0, 4), 10);
   const month = parseInt(todo.deadline.substr(5, 2), 10);
   const day = parseInt(todo.deadline.substr(8, 2), 10);
 
-  
-  const [cuTitle, setCuTitle] = useState([todo.title]);
+//changeModalの中でvalueを書き換えられるようにする
+  const [cuTitle, setCuTitle] = useState(todo.title);
   function changeTitle(event) {
-    setCuTitle(event.target.title);
+    setCuTitle(event.target.value);
   }
   
-  const [cuMemo, setCuMemo] = useState([todo.memo]);
+  const [cuMemo, setCuMemo] = useState(todo.memo);
   function changeMemo(event) {
-    setCuMemo(event.target.memo);
+    setCuMemo(event.target.value);
   }
   
-  const [cuDL, setCuDL] = useState([todo.deadline])
+  const [cuDL, setCuDL] = useState(todo.deadline)
   function changeDL(event) {
-    setCuDL(event.target.deadline)
+    setCuDL(event.target.value);
   }
 
 
   const reTitleRef = useRef();
   const reMemoRef = useRef();
-  const reDLRef = useRef();
 
   const changeClick = () => {
     const reTask = {
       id:todo.id,
       title:reTitleRef.current.value,
       memo:reMemoRef.current.value,
-      deadline:reDLRef.current.value,
+      deadline:document.getElementById('reDL').value,
     } 
-    fetch('/api', {
-      method: 'POST',
+    fetch('/todo/put', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(reTask)
-    })
-      .then(res => res.json())
-  };
+      })
+      .then(response => {
+            // if (response.ok) {
+          console.log(response);
+          window.location.replace('/todo');
+            // }
+        })
+        // .then((data) => console.log(data));
+        .catch(error => console.error('Error:', error));
+    }
 
   const deleteClick = () => {
-    fetch('/api', {
-      method: 'POST',
+    fetch('/todo/delete', {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(todo)
+      body:JSON.stringify({id:todo.id}) 
     })
-      .then(res => res.json())
-  };
+      .then(response => {
+            // if (response.ok) {
+              window.location.replace('/todo');
+            // }
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
   return (
     <div>
@@ -102,16 +115,16 @@ const Todo = ({ todo }) => {
                     </div>
                     <div className="modal-body">
                         <div className="input-group mb-3">
-                            <p><label className="input-group-text" htmlFor='reTitle'>Title</label></p>
+                            <label className="input-group-text" htmlFor='reTitle'>Title</label>
                             <textarea id="reTitle" className="form-control" type="text" ref={reTitleRef} value={cuTitle} onChange={changeTitle}></textarea>
                         </div>
                         <div className="input-group mb-3">
-                        <p><label className="input-group-text" htmlFor='reMemo'>Memo</label></p>
+                            <label className="input-group-text" htmlFor='reMemo'>Memo</label>
                             <textarea id='reMemo' className="form-control" aria-label="With textarea" ref={reMemoRef} value={cuMemo} onChange={changeMemo}></textarea>
                         </div>
                         <div className="input-group mb-3">
-                            <p><label className="input-group-text" htmlFor='reDL'>Deadline</label></p>
-                            <input id='reDL' type="date" className="form-control" ref={reDLRef} value={cuDL} onChange={changeDL}/>
+                            <label className="input-group-text" htmlFor='reDL'>Deadline</label>
+                            <input id='reDL' type="date" className="form-control" value={cuDL} onChange={changeDL}/>
                         </div>
                     </div>
                     <div className="modal-footer">
@@ -152,7 +165,6 @@ const Todo = ({ todo }) => {
           </div>
 
     </div>
-
   )
 }
 

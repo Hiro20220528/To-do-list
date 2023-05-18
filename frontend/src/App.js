@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 
 function App() {
 
+<<<<<<< HEAD
   const [todos, setTodos] = useState('');
 
   console.log("Hello");
@@ -24,14 +25,27 @@ function App() {
         console.log(data);
       });
   },[]);
+=======
+  const [todos, setTodos] = useState([]);
+  
+  useEffect(() => {
+    fetch('/todo')
+      .then((res) => res.json())
+      .then((data) => setTodos(data));
+  },[])
+>>>>>>> develop
 
 
 
 
   return (
     <div>
+<<<<<<< HEAD
       {/* <p>{todos}</p> */}
       {/* <div>
+=======
+      <div>
+>>>>>>> develop
         <TodoList todos={todos}/>
       </div> */}
       {/* <div>
