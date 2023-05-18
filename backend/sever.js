@@ -44,6 +44,115 @@ app.get('/todo', (req, res) => {
           });
 });
 
+app.post('/todo/post', (req, res) => {
+
+          // console.log(req);
+          console.log(req.body);
+          const task = {
+                    title: req.body.title,
+                    deadline: req.body.deadline,
+                    memo: req.body.memo,
+          };
+
+          pool.getConnection((err, connection) => {
+                    if(err) throw err;
+
+                    console.log("connecting mysql");
+
+                    connection.query(`INSERT INTO myTask SET ?`, task, (err, rows) => {
+                              connection.release();
+
+                              console.log(rows);
+                              if(!err) {
+                                        // res.render("/todo");
+                                        res.redirect("/todo");
+                                        console.log("success making new task!");
+                              }else {
+                                        console.log(err);
+                              }
+                    });
+          });
+
+});
+
+app.delete('/todo/delete', (req, res) => {
+
+          // console.log(req);
+          // console.log(req.body);
+          // task を取得
+          let deleteTaskId = req.body.id;
+
+          console.log(deleteTaskId);
+
+
+          // test respons
+          // res.json({id: 0, text: "プレゼン資料作成"});
+
+          // // todo mysqlからデータを取得し返す
+          pool.getConnection((err, connection) => {
+                    if(err) throw err;
+
+                    console.log("connecting mysql");
+
+                    connection.query(`DELETE FROM myTask WHERE id=?`, [deleteTaskId], (err, result) => {
+                              connection.release();
+
+                              if(!err) {
+                                        res.redirect("/todo");
+                                        console.log("success deleting new task!")
+                              }else {
+                                        console.log(err);
+                              }
+                    });
+          });
+          
+
+});
+
+
+app.put('/todo/put', (req, res) => {
+          // let updateTaskId = req.query.id;
+          // let updateTaskName = req.query.task;
+
+          const task = {
+                    id: req.body.id,
+                    title: req.body.title,
+                    deadline: req.body.deadline,
+                    memo: req.body.memo,
+          };
+
+          // console.log(updateTaskId, updateTaskName);
+
+          // test respons
+          // res.json({id: 0, text: "プレゼン資料作成"});
+
+          // todo mysqlからデータを取得し返す
+          if (task.id != null && task.title != null){
+                    pool.getConnection((err, connection) => {
+                              if(err) throw err;
+          
+                              console.log("connecting mysql");
+          
+                              connection.query(`UPDATE myTask SET ? WHERE id=?`, [task, task.id], (err, result) => {
+                                        connection.release();
+
+                                        if(!err) {
+                                                  res.redirect("/todo");
+                                                  // res.json({id: 0, text: "sample"});
+                                        }else {
+                                                  console.log(err);
+                                        }
+                              });
+                    });
+          }else {
+                    console.log("id is null");
+                    res.redirect("/todo");
+          }
+});
+
+// ***************************************************************************************************
+
+
 app.get('/todo-dev', (req, res) => {
           // todo mysqlからデータを取得し返す
 
@@ -67,69 +176,10 @@ app.get('/todo-dev', (req, res) => {
           });
 });
 
-app.post('/todo', (req, res) => {
-
-          // console.log(req);
-          console.log(req.body);
-          const task = {
-                    title: req.body.title,
-                    deadline: req.body.deadline,
-                    memo: req.body.memo,
-          };
-          console.log(`my tasi -> ${task}`);
-          pool.getConnection((err, connection) => {
-                    if(err) throw err;
-
-                    console.log("connecting mysql");
-
-                    connection.query(`INSERT INTO myTask SET ?`, task, (err, rows) => {
-                              connection.release();
-
-                              console.log(rows);
-                              if(!err) {
-                                        // res.redirect("/todo/add");
-                                        console.log("success making new task!");
-                              }else {
-                                        console.log(err);
-                              }
-                    });
-          });
-
-});
-
-app.delete('/todo', (req, res) => {
-
-          // console.log(req);
-          // console.log(req.body);
-          // task を取得
-          let deleteTaskId = req.body.id;
-
-          console.log(deleteTaskId);
 
 
-          // test respons
-          // res.json({id: 0, text: "プレゼン資料作成"});
 
-          // // todo mysqlからデータを取得し返す
-          pool.getConnection((err, connection) => {
-                    if(err) throw err;
 
-                    console.log("connecting mysql");
-
-                    connection.query(`DELETE FROM myTask WHERE id=?`, [deleteTaskId], (err, result) => {
-                              connection.release();
-
-                              if(!err) {
-                                        // res.redirect("/todo");
-                                        console.log("success making new task!")
-                              }else {
-                                        console.log(err);
-                              }
-                    });
-          });
-          
-
-});
 
 app.post('/todo/update', (req, res) => {
 
@@ -188,7 +238,7 @@ app.get('/todo/add', (req, res) => {
           
                                         console.log(rows);
                                         if(!err) {
-                                                  res.redirect("/todo");
+                                                  // res.redirect("/todo");
                                         }else {
                                                   console.log(err);
                                         }
@@ -196,7 +246,7 @@ app.get('/todo/add', (req, res) => {
                     });
           }else {
                     console.log("task is null");
-                    res.redirect("/todo");
+                    // res.redirect("/todo");
           }
 });
 
@@ -235,6 +285,7 @@ app.get('/todo/delete', (req, res) => {
                     res.redirect("/todo");
           }
 });
+
 
 // to do listを更新するapi
 app.get('/todo/update', (req, res) => {
