@@ -8,6 +8,8 @@ const mysql = require("mysql");
 
 const PORT = 8000;
 app.use(express.json()); // post bodyを受け取る
+
+
 const pool = mysql.createPool({
           connectionLimit: 10,
           host: process.env.SQL_HOST,
@@ -27,21 +29,22 @@ app.get('/todo', (req, res) => {
           // todo mysqlからデータを取得し返す
           // test respons
         //   res.json([{id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}, {id: 0, memo: "プレゼン資料作成", deadline:"2023-05-30"}]);
-        //   pool.getConnection((err, connection) => {
-        //             if(err) throw err;
 
-        //             console.log("connecting mysql");
+        pool.getConnection((err, connection) => {
+                if(err) throw err;
 
-        //             connection.query("SELECT * FROM task", (err, rows) => {
-        //                       connection.release();
+                console.log("connecting mysql");
 
-        connection.query("SELECT * FROM myTask", (err, rows) => {
-                connection.release();
-                console.log(rows);
-                if(!err) {
-                        res.json(rows);
-                }
-        });
+                connection.query("SELECT * FROM myTask", (err, rows) => {
+                        connection.release();
+                        console.log(rows);
+                        if(!err) {
+                                res.json(rows);
+                        }
+                });
+        })
+
+       
 });
 
 app.post('/todo/post', (req, res) => {

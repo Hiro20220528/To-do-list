@@ -11,21 +11,6 @@ import { useState, useEffect } from 'react';
 
 function App() {
 
-<<<<<<< HEAD
-  const [todos, setTodos] = useState('');
-
-  console.log("Hello");
-  
-  useEffect(() => {
-    fetch('/todo', {method: 'GET'})
-      .then((res) => {
-        // console.log(res);
-        return res.json();
-      }).then((data) => {
-        console.log(data);
-      });
-  },[]);
-=======
   const [todos, setTodos] = useState([]);
   
   useEffect(() => {
@@ -33,24 +18,18 @@ function App() {
       .then((res) => res.json())
       .then((data) => setTodos(data));
   },[])
->>>>>>> develop
 
 
 
 
   return (
     <div>
-<<<<<<< HEAD
-      {/* <p>{todos}</p> */}
-      {/* <div>
-=======
       <div>
->>>>>>> develop
         <TodoList todos={todos}/>
-      </div> */}
-      {/* <div>
+      </div>
+      <div>
         <AddTask/>
-      </div> */}
+      </div>
     </div>
 
     
